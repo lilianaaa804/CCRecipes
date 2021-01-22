@@ -95,6 +95,7 @@ public class ArticleController {
 
 		ModelAndView mav = new ModelAndView("/article/article_read");
 		mav.addObject("result", map);
+		mav.addObject("favorited", favorited);
 		mav.addObject("likeCount", likeCount);
 		System.out.println(likeCount);
 
