@@ -33,15 +33,24 @@ public class ArticleController {
 	
 	@RequestMapping(method=RequestMethod.GET, value="article_favorited_process.do")
 	public ModelAndView clickFavoritedProcess(HttpSession session, int article_no) {
+		CCRMember sessionUser = (CCRMember)session.getAttribute("sessionUser");
+		CCRArticleFavorited param = new CCRArticleFavorited();
+		param.setArticle_no(article_no);
+		param.setMember_no(sessionUser.getMember_no());
+
 		ModelAndView mav = new ModelAndView("redirect:./article_read_page.do?article_no="+article_no);
-		articleService.clickFavorited(session, article_no);
+		articleService.clickFavorited(param);
 		return mav;
 	}
 	
 	
 	@RequestMapping(method=RequestMethod.GET, value="article_like_process.do")
-	public String articleLikeProcess(int article_no, int member_no, CCRArticleLike vo) {
-		articleService.countArticleLike(article_no, member_no, vo);
+	public String articleLikeProcess(int article_no, int member_no) {
+		CCRArticleLike param = new CCRArticleLike();
+		param.setArticle_no(article_no);
+		param.setMember_no(member_no);
+
+		articleService.countArticleLike(param);
 		
 		return "redirect:./article_read_page.do?article_no="+article_no;
 	}
@@ -74,24 +83,21 @@ public class ArticleController {
 	}
 
 	@RequestMapping(method=RequestMethod.GET, value="article_read.do")
-	public ModelAndView readArticle(HttpSession session, int article_no, CCRArticleLike vo, CCRArticleFavorited param) {
-		ModelAndView mav = new ModelAndView("/article/article_read");
-		HashMap<String, Object> map = articleService.readArticle(article_no);
-		
-		mav.addObject("result", map);
-		
+	public ModelAndView readArticle(HttpSession session, int article_no) {
 		CCRMember sessionUser = (CCRMember)session.getAttribute("sessionUser");
+		CCRArticleFavorited param = new CCRArticleFavorited();
 		param.setArticle_no(article_no);
 		param.setMember_no(sessionUser.getMember_no());
-		int favorited = articleService.checkFavorited(param);
-		mav.addObject("favorited", favorited);
 
+		HashMap<String, Object> map = articleService.readArticle(article_no);
+		int favorited = articleService.checkFavorited(param);
 		int likeCount = articleService.getArticleLikeCount(article_no);
+
+		ModelAndView mav = new ModelAndView("/article/article_read");
+		mav.addObject("result", map);
 		mav.addObject("likeCount", likeCount);
-		
-		
-		
 		System.out.println(likeCount);
+
 		return mav;
 	}
 

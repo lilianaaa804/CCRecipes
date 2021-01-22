@@ -51,32 +51,14 @@ public class ArticleServiceImpl {
 	}
 	
 	//좋아요 클릭
-	public int countArticleLike(int article_no, int member_no, CCRArticleLike vo) {
-		
-		ModelAndView mav = new ModelAndView();
-		vo.setMember_no(member_no);
-		vo.setArticle_no(article_no);
-		
+	public void likeArticle(CCRArticleLike vo) {
 		int no = articleSQLMapper.selectAtcNoAndmembNo(vo);
-		int likes;
 		System.out.println("no값:" + no);
 		if(no == 0) {
 			articleSQLMapper.insertLikes(vo);
 		}else {
 			articleSQLMapper.deleteLikes(vo);
 		}
-		
-		likes = articleSQLMapper.countLikes(article_no);
-		
-		ArrayList<HashMap<String, Object>> resultList = new ArrayList<HashMap<String,Object>>();
-		
-		HashMap<String,Object> map = new HashMap<String,Object>();
-		map.put("likes", likes);
-		
-		resultList.add(map);
-		mav.addObject("resultList", resultList);
-		System.out.println(likes+"likes map 에 put");
-		return likes;
 	}
 	
 	//페이징
