@@ -1,0 +1,55 @@
+div{
+	overflow:auto;
+}
+
+#article_wrapper{
+	margin: 20px;
+}
+#article_header{	
+    margin: 0px 300px 30px 300px;
+}
+#article_header h1{
+	font-size: 40px;
+    text-align: center;
+    color: SaddleBrown;
+	
+}
+#article_main{
+	display:grid;
+	grid-template-columns: 1fr 900px 1.3fr;
+}
+#article_left{
+ 	display: grid;
+	border:1px solid gray;
+}
+#article_right{
+	display: grid;
+	border:1px solid gray;
+}
+#article_center{
+	display: grid;
+	padding: 20px;
+}
+#article_footer{
+	display: grid;
+	padding: 20px;	
+	border:1px solid gray;
+}
+#article_magazine{
+	
+}
+#article_write{
+	float: right;
+	
+}
+.btn_a {
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.write_a {background-color: SaddleBrown; margin-right: 20px;} /* Green */
+.write_a:hover {background-color: #5a2d0c;}

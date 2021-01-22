@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ccr.ccrecipes.content.mapper.BulletinRepleSQLMapper">
+	
+	<insert id="insert">
+	<![CDATA[
+		INSERT INTO CCR_BULLETIN_Reple VALUES(
+		    CCR_BULLETIN_Reple_seq.nextval,
+		    #{bulletin_no},
+		    #{member_no},
+		    #{reple_content},
+		    SYSDATE
+		)			
+	]]>	
+	</insert>
+	
+	<select id="selectByContentNo" resultType="com.ccr.ccrecipes.vo.CCRBulletinReple">
+	<![CDATA[
+		SELECT * FROM CCR_BULLETIN_Reple WHERE bulletin_no = #{bulletin_no}
+		ORDER BY bulletin_no ASC
+	]]>	
+	</select>
+	
+	
+</mapper>
+
+
+
+
+
+
+
+

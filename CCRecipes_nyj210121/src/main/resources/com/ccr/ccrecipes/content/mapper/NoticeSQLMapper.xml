@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.ccr.ccrecipes.content.mapper.NoticeSQLMapper">
+
+	<insert id="insert">
+		<![CDATA[
+			INSERT INTO CCR_NOTICE 
+			VALUES(CCR_NOTICE_seq.nextval,
+					#{member_no},
+					#{notice_title},
+					#{notice_text},
+					'0',
+					SYSDATE
+					)
+		]]>
+	</insert>
+
+
+	<select id="selectAll"
+		resultType="com.ccr.ccrecipes.vo.CCRNotice">
+		<![CDATA[
+			SELECT*
+			FROM(SELECT c1.*,ROWNUM as rnum 
+		    FROM(SELECT * 
+		        FROM CCR_NOTICE ORDER BY notice_no DESC) c1
+		    )c2
+		    WHERE c2.rnum >= (#{page_num}-1)*10+1 AND c2.rnum <= #{page_num}*10
+		]]>
+	</select>
+
+	<select id="selectByNo"
+		resultType="com.ccr.ccrecipes.vo.CCRNotice">
+		<![CDATA[
+			SELECT *FROM CCR_NOTICE WHERE notice_no = #{no}
+		]]>
+	</select>
+
+	<delete id="deleteByNo">
+		<![CDATA[
+			DELETE *FROM CCR_NOTICE WHERE notice_no = #{no}
+		]]>
+	</delete>
+
+	<update id="update">
+		<![CDATA[
+			UPDATE CCR_NOTICE 
+			SET notice_title =#{notice_title} ,
+			notice_text=#{notice_text}
+			WHERE notice_no = #{notice_no}
+		]]>
+	</update>
+
+	<update id="increaseReadCount">
+		<![CDATA[
+			UPDATE CCR_NOTICE 
+			SET notice_readcount =notice_readcount+1
+			WHERE notice_no =#{no}		
+		]]>
+	</update>
+
+	<select id="selectByTitle"
+		resultType="com.ccr.ccrecipes.vo.CCRNotice">
+		<![CDATA[
+			SELECT*FROM CCR_NOTICE
+			WHERE notice_title like '%'|| #{search_word} ||'%'
+			ORDER BY notice_no DESC
+		]]>
+	</select>
+
+	<select id="getPageCount" resultType="int">
+	<![CDATA[
+		SELECT ROUND(COUNT(*)/10) FROM CCR_NOTICE
+	]]>			
+	</select>
+</mapper>

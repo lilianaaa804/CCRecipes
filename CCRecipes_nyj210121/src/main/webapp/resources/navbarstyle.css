@@ -1,0 +1,212 @@
+
+
+body {
+	font-family: "Lato", sans-serif;
+	background-image: url("./image/background.png");
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.openbtn {
+	color: white;
+	font-size: 40px;
+	cursor: pointer;
+	margin-left: 15px;
+	width: 100%;
+}
+
+#navbtnicon {
+	height: 60px;
+	width: 66px;
+	background: rgba(0,0,0, 0.8);
+	display: inline-block; 
+	border-radius: 10px;
+	align-content: center;
+}
+.userbox{
+	display: inline-block;
+}
+
+.ccrsidenav {
+	height: 100%;
+	width: 0;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: AntiqueWhite;
+	overflow-x: hidden;
+	transition: 0.2s;
+	padding-top: 70px;
+	opacity: 0.9;
+}
+
+.ccrsidenav a {
+	padding: 10px 8px 10px 32px;
+	text-decoration: none;
+	font-size: 25px;
+	color: SaddleBrown;
+	display: block;
+	transition: 0.3s;
+}
+
+.ccrsidenav .closebtn {
+	position: absolute;
+	top: 5px;
+	font-size: 45px;
+	padding: 0px 0px 15px 25px;
+}
+
+.ccrsidenav-item {
+	text-decoration: none;
+	font-size: 25px;
+	color: PeachPuff;
+	display: block;
+	border: none;
+	background: none;
+	width: 100%;
+	text-align: left;
+	cursor: pointer;
+	outline: none;
+}
+
+.ccrsidenav-item a {
+	padding: 10px 8px 10px 28px;
+}
+
+.ccrsidenav a:hover, .dropdown-item:hover {
+	color: white;
+}
+
+.active {
+	background-color: PeachPuff;
+	color: PaleTurquoise;
+}
+
+.dropdown-container {
+		display: none;
+	background-color: PeachPuff;
+	padding-left: 8px;
+	transition: 0.3s;
+}
+
+.dropdown-container a {
+	color: SaddleBrown;
+	font-size: 20px;
+	padding: 5px 0px 5px 50px;
+}
+
+/* .dropdown-container a:hover { */
+/* 	color: lightgrey; */
+/* } */
+.fa-caret-down {
+	float: right;
+	padding-right: 8px;
+}
+
+.loginicon {
+	font-size: 40px;
+	float: left;
+	margin-left: 10px;
+	margin-top: 2px;
+	color: white;
+}
+
+.userbox{
+	height: 60px;
+	width: 200px;
+	background: rgba(0,0,0, 0.8);
+	display: inline-block;
+	border-radius: 10px;
+	float: right;
+	align-content: center;
+}
+
+.navbarlogo {
+	width: 200px;
+	height: 200px;
+	margin-left: 20px;
+	opacity: 1;
+	border-bottom: 3px solid SaddleBrown;
+}
+
+@media screen and (max-height: 450px) {
+	.ccrsidenav {
+		padding-top: 15px;
+	}
+	.ccrsidenav a {
+		font-size: 18px;
+	}
+}
+
+.ccrcontainer {
+	height: 1200px;
+	margin: 0px;
+	padding: 0px;
+}
+
+.hidden {
+	display: none
+}
+
+.topbar {
+	height: 70px;
+}
+
+/* footer */
+
+/* search bar */
+.searchbar {
+	height: 50px;
+	width: 550px;
+	margin: auto;
+	padding-top: 400px;
+}
+
+.searchbar input[type=submit] {
+	width: 70px;
+	color: #fff;
+	background-color: #0d6efd;
+	border-color: #0d6efd;
+	display: inline-block;
+	font-weight: 400;
+	line-height: 1.5;
+	text-decoration: none;
+	vertical-align: middle;
+	border: 1px solid transparent;
+	padding: 13px;
+	font-size: 16px;
+	border-radius: .25rem;
+	transition: color .15s ease-in-out, background-color .15s ease-in-out,
+		border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+	text-transform: none;
+	font-family: inherit;
+	box-sizing: border-box;
+	-webkit-writing-mode: horizontal-tb !important;
+	text-rendering: auto;
+	letter-spacing: normal;
+	text-indent: 0px;
+	text-shadow: none;
+	align-items: flex-start;
+	font: 400 13.3333px Arial;
+	-webkit-tap-highlight-color: transparent;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+.searchbar input[type=text] {
+	width: 450px;
+	box-sizing: border-box;
+	border: 2px solid #ccc;
+	border-radius: 4px;
+	font-size: 16px;
+	background-color: white;
+	background-image: url('./image/searchicon.png');
+	background-position: 10px 10px;
+	background-repeat: no-repeat;
+	padding: 12px 20px 12px 40px;
+	-webkit-transition: width 0.4s ease-in-out;
+	transition: width 0.4s ease-in-out;
+	display: inline-block;
+}

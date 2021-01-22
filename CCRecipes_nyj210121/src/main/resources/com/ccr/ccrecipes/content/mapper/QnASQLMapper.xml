@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ccr.ccrecipes.content.mapper.QnASQLMapper">
+
+	<insert id="insert">
+		<![CDATA[
+			INSERT INTO QNABOARD VALUES (
+				QNABOARD_seq.nextval, #{member_no}, #{qna_title}, #{qna_text}, #{qna_views}, SYSDATE
+			)	
+			
+		]]>
+	</insert>
+
+	<select id="selectAll"
+		resultType="com.ccr.ccrecipes.vo.CCRQnA">
+		<![CDATA[
+			SELECT * FROM QNABOARD ORDER BY qna_no DESC
+		]]>
+	</select>
+
+	<update id="increaseViews">
+		<![CDATA[
+			UPDATE QNABOARD SET qna_views = qna_views + 1 WHERE qna_no = #{qna_no}
+		]]>
+	</update>
+
+	<select id="selectByNo"
+		resultType="com.ccr.ccrecipes.vo.CCRQnA">
+		<![CDATA[
+			SELECT * FROM QNABOARD WHERE qna_no = #{qna_no}
+		]]>
+	</select>
+
+	<delete id="delete">	
+		<![CDATA[
+			DELETE QNABOARD WHERE qna_no = #{qna_no}
+		]]>
+	</delete>
+
+	<update id="updateQna">
+		<![CDATA[
+			UPDATE QNABOARD SET QNA_TITLE = #{qna_title}, QNA_TEXT = #{qna_text} WHERE qna_no = 5
+		]]>
+	</update>
+
+
+	<select id="selectByTitle"
+		resultType="com.ccr.ccrecipes.vo.CCRQnA">
+		<![CDATA[
+			SELECT * FROM QNABOARD WHERE qna_title LIKE  '%' || #{search_word} || '%'
+		]]>
+	</select>
+
+	<select id="selectByText"
+		resultType="com.ccr.ccrecipes.vo.CCRQnA">
+		<![CDATA[
+			SELECT * FROM QNABOARD WHERE qna_text LIKE '%' || #{search_word} || '%'
+		]]>
+	</select>
+
+	<select id="selectByWriter"
+		resultType="com.ccr.ccrecipes.vo.CCRQnA">
+		<![CDATA[
+			SELECT q.* FROM QNABoard q , CCRMember m
+			WHERE m.member_no = q.member_no
+			AND m.member_nickname LIKE '%' || #{search_word} || '%'
+			ORDER BY qna_no DESC
+			
+		]]>
+	</select>
+
+	<!-- <select id = "selectByMemberNo" resultType="com.ccr.ccrecipes.vo.QnaContent"> 
+		<![CDATA[ SELECT * FROM QNABOARD WHERE member_no = #{member_no} ]]> </select> -->
+
+	<select id="selectByEmail"
+		resultType="com.ccr.ccrecipes.vo.CCRQnA">
+		<![CDATA[
+			SELECT q.* FROM QNABoard q , CCRMember m
+			WHERE m.member_no = q.member_no
+			AND m.member_email LIKE '%' || #{search_word} || '%'
+			ORDER BY qna_no DESC
+		]]>
+	</select>
+
+	<select id="selectByMemberNo"
+		resultType="com.ccr.ccrecipes.vo.CCRQnA">
+		<![CDATA[
+			SELECT q.* FROM QNABoard q , CCRMember m
+			WHERE m.member_no = q.member_no
+			AND m.member_email LIKE '%' || #{search_word} || '%'
+			ORDER BY qna_no DESC
+		]]>
+	</select>
+
+	<select id="selectByRank"
+		resultType="com.ccr.ccrecipes.vo.CCRQnA">
+		<![CDATA[
+			SELECT q.* FROM QNABoard q , CCRMember m
+			WHERE m.member_no = q.member_no
+			AND m.member_rank LIKE '%' || #{search_word} || '%'
+			ORDER BY qna_no DESC
+		]]>
+	</select>
+
+	<select id="getPageCount" resultType="int">
+	<![CDATA[
+		SELECT CEIL(COUNT(*)/10) FROM QnaBoard
+	]]>
+	</select>
+
+	<insert id="insertLike">
+		<![CDATA[
+			INSERT INTO QnaLikes VALUES (#{qna_no}, #{member_no})
+		]]>
+	</insert>
+
+	<delete id="deleteLike">
+		<![CDATA[
+			DELETE QNALIKES WHERE qna_no = 41 AND member_no = 3
+		]]>
+	</delete>
+
+	<select id="selectByQnaNoAndMemberNo" resultType="String">
+		<![CDATA[
+			SELECT COUNT(*) FROM QnaLikes WHERE QNA_NO = 41 AND MEMBER_NO = 3
+		]]>
+	</select>
+
+
+	<!-- commentmapper -->
+
+	<insert id="insertQna">
+		<![CDATA[
+			INSERT INTO QnaComment VALUES(QnaComment_seq.nextval, #{qna_no}, #{member_no}, #{qna_comment_text}, SYSDATE)
+		]]>
+	</insert>
+
+	<select id="selectByQnaNo"
+		resultType="com.ccr.ccrecipes.vo.CCRQnAComment">
+		<![CDATA[
+			SELECT * FROM QnaComment WHERE qna_no = #{qna_no}
+		]]>
+	</select>
+</mapper>

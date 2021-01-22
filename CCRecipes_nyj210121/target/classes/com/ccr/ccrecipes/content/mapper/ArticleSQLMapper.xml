@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.ccr.ccrecipes.content.mapper.ArticleSQLMapper">
+	
+	<!-- 이미 찜한 사람 뽑아오기 -->
+	<select id="checkFavorited" resultType="int">
+	<![CDATA[
+		SELECT COUNT(*) FROM FAVORITED_ARTICLE
+		WHERE member_no = #{member_no}
+		AND article_no = #{article_no}
+	]]>
+	</select>
+	<!-- 전체 찜한 게시물 목록 뽑아오기  -->
+	<select id="selectFavorited">
+	<![CDATA[
+		SELECT * FROM FAVORITED_ARTICLE ORDER BY SYSDATE DESC
+	]]>
+	</select>
+	
+	<!-- 게시물 찜 취소 -->
+	<delete id="deleteFavorited">
+	<![CDATA[
+		DELETE FROM FAVORITED_ARTICLE 
+		WHERE member_no = #{member_no} 
+		AND article_no = #{article_no} 
+	]]>
+	</delete>
+	<!--게시물 찜하기-->
+	<insert id="insertFavorited">
+	<![CDATA[
+		INSERT INTO FAVORITED_ARTICLE VALUES(
+		FAVORITED_ARTICLE_seq.nextval,
+		#{member_no},
+		#{article_no},
+		SYSDATE
+		)
+	]]>
+	</insert>
+	<!-- 전체 좋아요 수 뽑아오기 -->
+	<select id="countLikes" resultType = "int">
+	<![CDATA[
+		SELECT COUNT(*) FROM Article_likes
+	]]>
+	
+	</select>
+	<!-- 좋아요 한 멤버 뽑아오기 -->
+	<select id="selectAtcNoAndMemNo" resultType="int">
+	<![CDATA[
+		SELECT COUNT(*) FROM Article_likes 
+		WHERE article_no = #{article_no} 
+		AND member_no = #{member_no}
+	]]>
+	</select>
+	<!-- 좋아요 delete -->
+	<delete id="deleteLikes">
+	<![CDATA[
+		DELETE FROM Article_likes 
+		WHERE member_no = #{member_no}
+		AND article_no = #{article_no}
+	]]>
+	</delete>
+	<!-- 좋아요 insert -->
+	<insert id="insertLikes">
+	<![CDATA[
+		INSERT INTO Article_likes VALUES(
+			#{article_no}, #{member_no}
+		)
+	]]>
+	</insert>
+
+	<!--제목 검색 -->
+	<select id="selectByTitle"
+		resultType="com.ccr.ccrecipes.vo.CCRArticle">
+	<![CDATA[
+		SELECT * FROM Article
+		WHERE article_title LIKE '%'|| #{search_word} || '%'
+		ORDER BY article_no DESC
+	]]>
+	</select>
+
+	<!-- 내용 검색 -->
+	<select id="selectByText"
+		resultType="com.ccr.ccrecipes.vo.CCRArticle">
+	<![CDATA[
+		SELECT * FROM Article
+		WHERE article_text LIKE '%'|| #{search_word} || '%'
+		ORDER BY article_no DESC
+	]]>
+	</select>
+
+	<!-- 작성자 검색 -->
+	<select id="selectByMember"
+		resultType="com.ccr.ccrecipes.vo.CCRArticle">
+	<![CDATA[
+		SELECT * FROM ARTICLE atc, CCRMEMBER mem
+		WHERE mem.member_no = atc.member_no
+		AND mem.member_nickname LIKE '%'|| #{search_word} || '%'
+		ORDER BY article_no DESC
+	]]>
+	</select>
+
+	<!--글 갯수세기 -->
+	<select id="getArticleCount" resultType="int">
+	<![CDATA[
+		SELECT CEIL(COUNT(*)/10) FROM Article
+	]]>
+
+	</select>
+
+	<!-- article key 생성 -->
+	<select id="createKey" resultType="int">
+	<![CDATA[
+		SELECT Article_seq.nextval FROM Dual
+	]]>
+
+	</select>
+	<!-- article 조회수 -->
+	<update id="views">
+	<![CDATA[
+		UPDATE Article 
+		SET article_views = article_views + 1
+		WHERE article_no = #{no}
+	
+	]]>
+	</update>
+
+	<!-- article 글 수정 -->
+	<update id="update">
+	<![CDATA[
+		UPDATE ARTICLE 
+		SET article_title= #{article_title}, article_text=#{article_text} 
+		WHERE article_no = #{article_no}
+	]]>
+	</update>
+	<!-- article 글 삭제 -->
+	<delete id="delete">
+	<![CDATA[
+		DELETE FROM ARTICLE WHERE article_no = #{no}
+	]]>
+	</delete>
+
+	<!-- article 글 조회 -->
+	<select id="selectByNo"
+		resultType="com.ccr.ccrecipes.vo.CCRArticle">
+	<![CDATA[
+		SELECT * FROM ARTICLE WHERE article_no = #{no}
+	
+	]]>
+	</select>
+	<!-- article 글 목록 출력 -->
+	<select id="selectAll" resultType="com.ccr.ccrecipes.vo.CCRArticle">
+	<![CDATA[
+		SELECT * FROM (
+			SELECT c1.*, ROWNUM as rnum
+			FROM (SELECT * FROM Article ORDER BY article_no DESC) c1
+			) c2 
+		WHERE c2.rnum >=(#{page_num}-1)*10+1
+		AND c2.rnum <= #{page_num}*10
+	
+	]]>
+	</select>
+
+	<!--article 글쓰기 -->
+	<insert id="insert">
+	<![CDATA[
+		INSERT INTO ARTICLE VALUES(
+		#{article_no}, 
+		#{member_no}, 
+		#{article_title}, 
+		#{article_text}, 
+		0, 
+		SYSDATE)
+	]]>
+	</insert>
+
+	<select id="selectThumbnail"
+		resultType="com.ccr.ccrecipes.vo.CCRArticleImage">
+	<![CDATA[
+		select * FROM 
+		    (select * 
+		    from article_image 
+		    where article_no = #{article_no}) 
+		WHERE ROWNUM = 1
+	]]>
+	</select>
+
+	<select id="selectByArticleNo"
+		resultType="com.ccr.ccrecipes.vo.CCRArticleImage">
+	<![CDATA[
+		SELECT * FROM ARTICLE_Image WHERE article_no = #{article_no}
+	]]>
+	</select>
+
+	<insert id="insertImage">
+	<![CDATA[
+		INSERT INTO ARTICLE_Image VALUES(
+			ARTICLE_Image_seq.nextval,
+			#{article_no},
+			#{articleimg_link}
+		)
+	]]>
+	</insert>
+</mapper>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.ccr.ccrecipes.member.mapper.FriendSQLMapper">
+
+	<select id="selectAllFriends"
+		resultType="com.ccr.ccrecipes.vo.CCRFriendship">
+		<![CDATA[
+			SELECT * FROM FRIENDSHIP 
+			WHERE (user_one_no = #{sessionUserno} 
+			OR user_two_no = #{sessionUserno}) AND friendship_status = 1
+		]]>
+	</select>
+
+	<select id="getPendingRequests"
+		resultType="com.ccr.ccrecipes.vo.CCRFriendship">
+		<![CDATA[
+			SELECT * 
+			FROM FRIENDSHIP 
+			WHERE ( user_one_no = #{sessionUserno} OR user_two_no = #{sessionUserno} ) 
+			AND friendship_status = 0 
+			AND action_user_no = #{sessionUserno}
+		]]>
+	</select>
+
+	<select id="getFriendRequests"
+		resultType="com.ccr.ccrecipes.vo.CCRFriendship">
+		<![CDATA[
+			SELECT * 
+			FROM FRIENDSHIP 
+			WHERE ( user_one_no = #{sessionUserno} OR user_two_no = #{sessionUserno} ) 
+			AND friendship_status = 0 
+			AND action_user_no != #{sessionUserno}
+		]]>
+	</select>
+
+	<select id="getBlockedUsers"
+		resultType="com.ccr.ccrecipes.vo.CCRFriendship">
+		<![CDATA[
+			SELECT * 
+			FROM FRIENDSHIP 
+			WHERE ( user_one_no = #{sessionUserno} OR user_two_no = #{sessionUserno} ) 
+			AND friendship_status = 3 
+			AND action_user_no = #{sessionUserno}
+		]]>
+	</select>
+
+	<select id="friendCheck" resultType="java.lang.Integer">
+		<![CDATA[
+			SELECT friendship_status 
+			FROM FRIENDSHIP 
+			WHERE ( user_one_no = #{user_one_no} OR user_two_no = #{user_one_no} ) 
+			AND ( user_one_no = #{user_two_no} OR user_two_no = #{user_two_no} ) 
+		]]>
+	</select>
+
+	<insert id="sendFriendRequest">
+		<![CDATA[
+			INSERT INTO FRIENDSHIP VALUES (FRIENDSHIP_seq.nextval, #{user_one_no}, #{user_two_no}, 0, #{user_one_no} )
+		]]>
+	</insert>
+
+	<delete id="cancelFriendRequest">
+		<![CDATA[
+			DELETE FROM FRIENDSHIP 
+			WHERE user_one_no = #{user_one_no} AND user_two_no = #{user_two_no} 
+			AND action_user_no = #{user_one_no} 
+			AND friendship_status = 0
+		]]>
+	</delete>
+
+	<update id="acceptFriendRequest">
+		<![CDATA[
+			UPDATE FRIENDSHIP 
+			SET friendship_status = 1, action_user_no = #{user_one_no} 
+			WHERE user_one_no = #{user_two_no} AND user_two_no = #{user_one_no}
+		]]>
+	</update>
+
+	<delete id="deleteFriend">
+		<![CDATA[
+			DELETE FROM FRIENDSHIP 
+			WHERE ( user_one_no = #{user_one_no} OR user_two_no = #{user_one_no} ) 
+			AND ( user_one_no = #{user_two_no} OR user_two_no = #{user_two_no} )
+		]]>
+	</delete>
+
+	<update id="blockFriend">
+		<![CDATA[
+			UPDATE FRIENDSHIP 
+			SET friendship_status = 3, action_user_no = #{user_one_no} 
+			WHERE user_one_no = #{user_one_no} AND user_two_no = #{user_two_no}
+		]]>
+	</update>
+	
+	<insert id="blockUser">
+		<![CDATA[
+			INSERT INTO FRIENDSHIP VALUES (FRIENDSHIP_seq.nextval, #{user_one_no}, #{user_two_no}, 3, #{user_one_no} )
+		]]>
+	</insert>
+	
+	<delete id="unblockUser">
+		<![CDATA[
+			DELETE FROM FRIENDSHIP 
+			WHERE ( user_one_no = #{user_one_no} OR user_two_no = #{user_one_no} ) 
+			AND ( user_one_no = #{user_two_no} OR user_two_no = #{user_two_no} ) 
+			AND friendship_status = 3 
+			AND action_user_no = ${user_one_no}
+		]]>
+	</delete>
+</mapper>

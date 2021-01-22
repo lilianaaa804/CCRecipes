@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ccr.ccrecipes.content.mapper.BulletinImageSQLMapper">
+	<insert id="insert">
+	<![CDATA[
+		INSERT INTO CCR_BULLETIN_Image VALUES(
+		    CCR_BULLETIN_Image_seq.nextval,
+		    #{bulletin_no},
+		    #{image_link}
+		)	
+	]]>	
+	</insert>
+
+	<select id="selectByContentNo" resultType="com.ccr.ccrecipes.vo.CCRBulletinImage">
+	<![CDATA[
+		SELECT * FROM CCR_BULLETIN_Image WHERE bulletin_no = #{bulletin_no}	
+	]]>	
+	</select>
+
+
+</mapper>
+
+
+
+

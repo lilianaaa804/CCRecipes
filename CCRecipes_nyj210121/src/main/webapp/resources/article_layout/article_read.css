@@ -1,0 +1,85 @@
+div{
+	overflow:auto;
+}
+
+#article_content{
+	background-color: rgba(255, 255, 255, 0.8);
+	padding: 30px;
+	
+}
+#article_head{
+	
+}
+#article_body{
+	width: 100%;
+	
+	
+}
+#article_title{
+	font-size: 40px;
+	
+}
+#article_date{
+	float: left;
+	margin: 20px;
+	
+}
+#article_views{
+	float: left;
+	margin: 20px;
+	
+}
+#article_body{
+	
+}
+
+#article_text{
+	padding: 30px;
+	
+}
+
+
+#buttons{
+	
+}
+#button_list{
+	margin: 20px;
+}
+#article_pfbox{
+	
+	
+}
+#article_nickname{
+	test-align: center;
+}
+#article_subscribe{
+	
+}
+#article_pfbio{
+	
+}
+
+.read_icon-bar {
+  
+  float: left;
+  width: 50px;
+}
+
+.read_icon-bar a {
+  display: block;
+  text-align: center;
+  padding: 10px;
+  transition: all 0.3s ease;
+  color: SaddleBrown;
+  font-size: 25px;
+  border-radius: 10px;
+  
+}
+
+.read_icon-bar a:hover {
+  background-color: PeachPuff;
+}
+
+.read_icon_active {
+  background-color: PeachPuff;
+}

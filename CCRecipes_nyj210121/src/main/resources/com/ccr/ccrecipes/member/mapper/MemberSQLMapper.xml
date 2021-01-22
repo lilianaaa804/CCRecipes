@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.ccr.ccrecipes.member.mapper.MemberSQLMapper">
+
+	<insert id="insert">
+		<![CDATA[
+			INSERT INTO CCRMEMBER VALUES (
+			    CCRMember_seq.nextval, #{member_email}, #{member_pw}, #{member_nickname}, 0, '', '', 1, SYSDATE
+			)
+		]]>
+	</insert>
+
+	<select id="selectByIdAndPw"
+		resultType="com.ccr.ccrecipes.vo.CCRMember">
+		<![CDATA[
+			SELECT * FROM CCRMEMBER WHERE member_email = #{member_email} AND member_pw = #{member_pw}
+		]]>
+	</select>
+
+	<select id="selectByNo"
+		resultType="com.ccr.ccrecipes.vo.CCRMember">
+		<![CDATA[
+			SELECT*FROM CCRMEMBER WHERE member_no = #{no}
+		]]>
+	</select>
+
+	<select id="selectAll"
+		resultType="com.ccr.ccrecipes.vo.CCRMember">
+		<![CDATA[
+			SELECT * FROM CCRMember ORDER BY member_no DESC
+		]]>
+	</select>
+
+	<delete id="deleteByNo">
+		<![CDATA[
+			DELETE CCRMEMBER WHERE member_no = #{member_no}
+		]]>
+	</delete>
+
+	<update id="updateByNo">
+		<![CDATA[
+			UPDATE CCRMEMBER SET member_nickname = #{member_nickname}, member_rank = #{member_rank}, member_coin = #{member_coin} WHERE member_no = #{member_no}
+		]]>
+
+	</update>
+
+
+
+	<!-- <select id = "selectByMemberNo" resultType="com.ccr.ccrecipes.vo.CCRMember"> -->
+	<!-- <![CDATA[ -->
+	<!-- SELECT * FROM CCRMember WHERE member_no = #{member_no} -->
+	<!-- ]]> -->
+	<!-- </select> -->
+
+	<select id="selectByEmail"
+		resultType="com.ccr.ccrecipes.vo.CCRMember">
+		<![CDATA[
+			SELECT * FROM CCRMember WHERE member_email LIKE '%' || #{search_word} || '%'
+		]]>
+	</select>
+
+	<select id="selectByNickname"
+		resultType="com.ccr.ccrecipes.vo.CCRMember">
+		<![CDATA[
+			SELECT * FROM CCRMember WHERE member_nickname LIKE '%' || #{search_word} || '%'
+		]]>
+	</select>
+
+	<select id="selectByRank"
+		resultType="com.ccr.ccrecipes.vo.CCRMember">
+		<![CDATA[
+			SELECT * FROM CCRMember WHERE member_rank = #{search_word}
+		]]>
+	</select>
+
+
+
+</mapper>

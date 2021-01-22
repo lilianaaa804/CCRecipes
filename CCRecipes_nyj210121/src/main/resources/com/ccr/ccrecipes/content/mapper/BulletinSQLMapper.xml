@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ccr.ccrecipes.content.mapper.BulletinSQLMapper">
+
+	<select id="createKey" resultType="int">
+		<![CDATA[
+			SELECT CCR_BULLETIN_seq.nextval FROM Dual
+		]]>	
+	</select>
+
+
+	<insert id="insert">
+		<![CDATA[
+			INSERT INTO CCR_BULLETIN VALUES(
+			    #{bulletin_no},
+			    #{member_no},
+			    #{bulletin_title},
+			    #{bulletin_content},
+			    0,
+			    SYSDATE
+			)				
+		]]>
+	</insert>
+
+	<select id="selectAll" resultType="com.ccr.ccrecipes.vo.CCRBulletin">
+	<![CDATA[
+		SELECT * 
+		FROM (
+		    SELECT c1.*,ROWNUM as rnum 
+		    FROM (
+		        SELECT * 
+		        FROM CCR_BULLETIN 
+		        ORDER BY bulletin_no DESC) c1
+		    ) c2
+		WHERE c2.rnum >= (#{page_num}-1)*10+1 
+		AND c2.rnum <= #{page_num}*10		
+	]]>
+	</select>
+
+	<select id="selectByTitle" resultType="com.ccr.ccrecipes.vo.CCRBulletin">
+	<![CDATA[
+		SELECT * FROM CCR_BULLETIN 
+		WHERE bulletin_title LIKE '%' || #{search_word} || '%'
+		ORDER BY bulletin_no DESC
+	]]>
+	</select>
+
+	<select id="selectByContent" resultType="com.ccr.ccrecipes.vo.CCRBulletin">
+	<![CDATA[
+		SELECT * FROM CCR_BULLETIN 
+		WHERE bulletin_content LIKE '%' || #{search_word} || '%'
+		ORDER BY bulletin_no DESC
+	]]>
+	</select>
+
+	<select id="selectByWriter" resultType="com.ccr.ccrecipes.vo.CCRBulletin">
+	<![CDATA[
+		SELECT c.* FROM CCR_BULLETIN c , CCRMember m
+		WHERE m.member_no = c.member_no
+		AND m.member_nickname LIKE '%' || #{search_word} || '%'
+		ORDER BY bulletin_no DESC
+	]]>
+	</select>
+
+
+	<!-- 글 보기..쿼리.. -->
+	<select id="selectByNo" resultType="com.ccr.ccrecipes.vo.CCRBulletin">
+	<![CDATA[
+		SELECT * FROM CCR_BULLETIN WHERE bulletin_no = #{no}
+	]]>
+	</select>
+
+	<!-- 글 삭제 쿼리... -->
+	<delete id="deleteByNo">
+	<![CDATA[
+		DELETE FROM CCR_BULLETIN WHERE bulletin_no = #{no}
+	]]>
+	</delete>
+
+	<!-- 글 수정 쿼리... -->
+	<update id="update">
+	<![CDATA[
+		UPDATE CCR_BULLETIN 
+		SET bulletin_title=#{bulletin_title},
+			bulletin_content=#{bulletin_content}
+		WHERE bulletin_no = #{bulletin_no}		
+	]]>
+	</update>
+
+	<update id="increaseReadCount">
+	<![CDATA[
+		UPDATE CCR_BULLETIN 
+		SET bulletin_readcount = bulletin_readcount + 1
+		WHERE bulletin_no = #{no}		
+	]]>		
+	</update>
+	
+	<select id="getPageCount" resultType="int">
+	<![CDATA[
+		SELECT CEIL(COUNT(*)/10) FROM CCR_BULLETIN
+	]]>			
+	</select>
+
+
+
+
+
+</mapper>
